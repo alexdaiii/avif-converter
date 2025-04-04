@@ -1,0 +1,5 @@
+example
+*.png
+*.avif
+
+.idea
