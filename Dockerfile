@@ -9,16 +9,14 @@ ARG USER_GID=${USER_UID}
 # Install necessary packages
 RUN apt-get update \
     && apt-get install -y \
-    libavif-bin sudo \
+    libavif-bin \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 
 # Create a non-root user with sudo privileges
 RUN groupadd -g ${USER_GID} ${USERNAME} \
-    && useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash ${USERNAME} \
-    && echo "${USERNAME} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} \
-    && chmod 0440 /etc/sudoers.d/${USERNAME}
+    && useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash ${USERNAME}
 
 # Modify the user and group IDs and change ownership of the home directory
 RUN groupmod --gid ${USER_GID} ${USERNAME} \
