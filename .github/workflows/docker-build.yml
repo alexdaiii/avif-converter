@@ -39,7 +39,7 @@ jobs:
         run: |
           tag=$(jq -r '.tag' tag.json)
           echo "Tagging image with: $tag"
-          echo "::set-output name=tag::$tag"
+          echo "IMAGE_TAG=$tag" >> $GITHUB_ENV
         shell: bash
 
       - name: Build and push
@@ -49,7 +49,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ steps.read_json.outputs.tag }}
+            ghcr.io/${{ github.repository }}:${IMAGE_TAG}
           build-args: |
-            DebianVersion=${{ steps.read_json.outputs.tag }}
+            DebianVersion=${IMAGE_TAG}
             
